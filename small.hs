@@ -1,18 +1,11 @@
-
-
-enc :: Char -> Char
-enc 'l' = 'i'
-enc	chr = chr 
-
-encode :: String -> String
-encode s = map (\c -> enc c) s
-
-
-
-
+check :: String -> String
+check s = case compare (length s) 50 of
+	LT -> "."
+	EQ -> "..."
+	GT -> "!"
 
 main :: IO ()
 main  =  do 
 		f <- readFile "./input.txt"
-		writeFile "./output.txt" (f++"\n\n"++(show.length) f++"字")
+		writeFile "./output.txt" (f++"\n\n"++(show.length) f++check f++"字")
 		print $ lines (f++(show.length) f)
