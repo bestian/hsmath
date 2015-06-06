@@ -1,0 +1,100 @@
+data Wu = Extend (Float -> Float) | Yet Float
+
+{- Examples    -}
+
+a1 = Extend (*10)
+a2 = Yet 5
+a3 = Extend (\x -> 5)
+a4 = Extend (+1)
+m = Extend (10**)
+s = Extend (0.1**)
+c = Extend id
+c2 = log 2 / log m
+c3 = log 3 / log m
+c4 = log 4 / log m
+
+
+main = do
+    print ((1/m) * m)   		{-	1	-}	
+    print (c2 / c4)				{-	2	-}	
+    print (10**c - m + 3)		{-	3	-}
+
+
+{- Structures  -}
+
+list :: Wu -> [Float]
+list (Extend f) = map f [1..5]
+list (Yet x) = [x | _ <- [1..5]]
+
+long :: Wu -> [Float]
+long (Extend f) = map f [1..100]
+long (Yet x) = [x | _ <- [1..100]]
+
+instance Show Wu where
+	show (Yet c) = show c
+	show x = show (list x)
+
+instance Eq Wu where
+	(==) x y = list x == long y {- not strict  -}
+
+instance Ord Wu where
+	compare x y = compare (last $ long x) (last $ long y) {- not strict  -}
+
+negateWu :: Wu -> Wu
+negateWu (Extend f) = Extend (\x -> 0 - f x)
+negateWu (Yet c) = Yet (-c)
+
+instance Num Wu where
+	(Extend f) + (Extend g) = Extend (\x -> f x + g x)
+	(Extend f) + (Yet c) = Extend (\x -> f x + c)
+	(Yet c) + (Extend f) = Extend (\x -> f x + c)
+	(Yet k) + (Yet c) = Yet (k+c)
+	x - y = x + negateWu y
+	(Extend f) * (Extend g) = Extend (\x -> f x * g x)
+	(Extend f) * (Yet c) = Extend (\x -> f x * c)
+	(Yet c) * (Extend f) = Extend (\x -> f x * c)
+	(Yet k) * (Yet c) = Yet (k*c)
+	abs (Extend f) = Extend (f.abs)
+	abs (Yet c) = Yet (abs c)
+	signum x = Yet (signum (last $ list x))
+	fromInteger c = Yet (fromInteger c)
+
+instance Fractional Wu where
+	(Extend f) / (Extend g) = Extend (\x -> f x / g x)
+	(Extend f) / (Yet c) = Extend (\x -> f x / c)
+	(Yet c) / (Extend f) = Extend (\x -> f x / c)
+	(Yet k) / (Yet c) = Yet (k/c)
+	fromRational c = Yet (fromRational c)
+
+
+instance Floating Wu where
+	pi = Yet pi
+	exp (Extend f) = Extend (exp.f)
+	exp (Yet c) = Yet (exp c)
+	log (Extend f) = Extend (log.f)
+	log (Yet c) = Yet (log c)
+	sin (Extend f) = Extend (sin.f)
+	sin (Yet c) = Yet (sin c)
+	cos (Extend f) = Extend (cos.f)
+	cos (Yet c) = Yet (cos c)
+	tan (Extend f) = Extend (tan.f)
+	tan (Yet c) = Yet (tan c)
+	sinh (Extend f) = Extend (sinh.f)
+	sinh (Yet c) = Yet (sinh c)
+	cosh (Extend f) = Extend (cosh.f)
+	cosh (Yet c) = Yet (cosh c)
+	tanh (Extend f) = Extend (tanh.f)
+	tanh (Yet c) = Yet (tanh c)
+	asin (Extend f) = Extend (asin.f)
+	asin (Yet c) = Yet (asin c)
+	acos (Extend f) = Extend (acos.f)
+	acos (Yet c) = Yet (acos c)
+	atan (Extend f) = Extend (atan.f)
+	atan (Yet c) = Yet (atan c)
+	asinh (Extend f) = Extend (asinh.f)
+	asinh (Yet c) = Yet (asinh c)
+	acosh (Extend f) = Extend (acosh.f)
+	acosh (Yet c) = Yet (acosh c)
+	atanh (Extend f) = Extend (atanh.f)
+	atanh (Yet c) = Yet (atanh c)
+

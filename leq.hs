@@ -5,8 +5,8 @@
 
 solve1 :: String -> String
 solve1 f = case a2 of
-		[] -> (show $ 0 + read (tail b2) + read (tail c2)) ++ tt 
-		_ -> (show $ 0 + read (tail b2) - read (tail a2)) ++ tt
+		[] -> show $ (0 + read (tail b2) + read (tail c2)) / read tt 
+		_ -> show $ (0 + read (tail b2) - read (tail a2)) / read tt
 		where
 			(b1,b2) = break (\x -> x == '=') f
 			(a1,a2) = break (\x -> x == '+') b1
@@ -14,8 +14,8 @@ solve1 f = case a2 of
 			(f1,f2) = break (\x -> x == 'x') f
 			tt = getTail f1
 			getTail f1 = case f1 of 
-				[] -> "\n\n"
-				_ -> " / " ++ f1 ++ "\n\n"
+				[] -> "1"
+				_ -> f1
 
 
 
