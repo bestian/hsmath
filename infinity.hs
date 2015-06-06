@@ -9,9 +9,9 @@ a4 = Extend (+1)
 m = Extend (10**)
 s = Extend (0.1**)
 c = Extend id
-c2 = log 2 / log m
+c2 = log 2 / log m    {- log(M,2) 以二為底，M的對數。也就是二進制時要表現出0~1所有數所需要的位數-}
 c3 = log 3 / log m
-c4 = log 4 / log m
+c4 = log 4 / log m    {- log(M,4) 以四為底，M的對數。也就是四進制時要表現出0~1所有數所需要的位數，比二進制少一半-}
 
 
 main = do
