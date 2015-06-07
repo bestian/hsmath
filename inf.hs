@@ -42,6 +42,10 @@ long :: Wu -> [Float]
 long (Extend f) = map f [0..100]
 long (Yet x) = [x | _ <- [0..100]]
 
+full :: Wu -> [Float]
+full (Extend f) = map f [0..]
+full (Yet x) = [x | _ <- [0..]]
+
 instance Show Wu where
 	show (Yet c) = show c
 	show x = show (list x)
