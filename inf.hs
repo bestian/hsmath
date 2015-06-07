@@ -16,17 +16,23 @@ c10 = log 10 / log m
 
 
 
+
 main = do
-    print (c10 - c)	{-	0	-}
-    print ((1/m) * m)   		{-	1	-}	
-    print (c2 / c4)				{-	2	-}	
-    print (10**c - m + 3)		{-	3	-}
-
-
+    print (c10 - c)				{-	0		-}
+    print ((1/m) * m)   		{-	1		-}	
+    print (c2 / c4)				{-	2		-}	
+    print (10**c - m + 3)		{-	3		-}
+    print log (wu 0) == -m 		{-	True	-}
 
 
 
 {- Structures  -}
+
+wu :: Float -> Wu
+wu c = Yet c
+
+gen :: (Float->Float) -> Wu
+gen f = Extend f
 
 list :: Wu -> [Float]
 list (Extend f) = map f [0..5]
@@ -41,7 +47,7 @@ instance Show Wu where
 	show x = show (list x)
 
 instance Eq Wu where
-	(==) x y = list x == long y {- not strict  -}
+	(==) x y = list x == list y {- not strict  -}
 
 instance Ord Wu where
 	compare x y = compare (last $ long x) (last $ long y) {- not strict  -}
@@ -79,8 +85,12 @@ instance Floating Wu where
 	pi = Yet pi
 	exp (Extend f) = Extend (exp.f)
 	exp (Yet c) = Yet (exp c)
-	log (Extend f) = Extend (log.f)
-	log (Yet c) = Yet (log c)
+	(Extend f) ** (Extend g) = Extend (\x -> f x ** g x)
+	(Extend f) ** (Yet c) = Extend (\x -> f x ** c)
+	(Yet c) ** (Extend f) = Extend (\x -> c ** f x)
+	(Yet k) ** (Yet c) = Yet (k**c)
+	log a = (a**s - 1) * m
+{-	log (Extend f) = Extend (log.f) -}
 	logBase x y = log y / log x
 	sin (Extend f) = Extend (sin.f)
 	sin (Yet c) = Yet (sin c)
@@ -106,10 +116,7 @@ instance Floating Wu where
 	acosh (Yet c) = Yet (acosh c)
 	atanh (Extend f) = Extend (atanh.f)
 	atanh (Yet c) = Yet (atanh c)
-	(Extend f) ** (Extend g) = Extend (\x -> f x ** g x)
-	(Extend f) ** (Yet c) = Extend (\x -> f x ** c)
-	(Yet c) ** (Extend f) = Extend (\x -> f x ** c)
-	(Yet k) ** (Yet c) = Yet (k**c)
+	
 
 
 {- 應用 -}
