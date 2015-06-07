@@ -12,9 +12,10 @@ c = Extend id
 c2 = log 2 / log m    {- log(M,2) 以二為底，M的對數。也就是二進制時要表現出0~1所有數所需要的位數-}
 c3 = log 3 / log m
 c4 = log 4 / log m    {- log(M,4) 以四為底，M的對數。也就是四進制時要表現出0~1所有數所需要的位數，比二進制少一半-}
-
+c10 = log 10 / log m
 
 main = do
+    print (c10 - c)	{-	0	-}
     print ((1/m) * m)   		{-	1	-}	
     print (c2 / c4)				{-	2	-}	
     print (10**c - m + 3)		{-	3	-}
@@ -23,12 +24,12 @@ main = do
 {- Structures  -}
 
 list :: Wu -> [Float]
-list (Extend f) = map f [1..5]
-list (Yet x) = [x | _ <- [1..5]]
+list (Extend f) = map f [0..5]
+list (Yet x) = [x | _ <- [0..5]]
 
 long :: Wu -> [Float]
-long (Extend f) = map f [1..100]
-long (Yet x) = [x | _ <- [1..100]]
+long (Extend f) = map f [0..100]
+long (Yet x) = [x | _ <- [0..100]]
 
 instance Show Wu where
 	show (Yet c) = show c
