@@ -14,11 +14,16 @@ c3 = log 3 / log m
 c4 = log 4 / log m    {- log(M,4) 以四為底，M的對數。也就是四進制時要表現出0~1所有數所需要的位數，比二進制少一半-}
 c10 = log 10 / log m
 
+
+
 main = do
     print (c10 - c)	{-	0	-}
     print ((1/m) * m)   		{-	1	-}	
     print (c2 / c4)				{-	2	-}	
     print (10**c - m + 3)		{-	3	-}
+
+
+
 
 
 {- Structures  -}
@@ -68,12 +73,15 @@ instance Fractional Wu where
 	fromRational c = Yet (fromRational c)
 
 
+
+
 instance Floating Wu where
 	pi = Yet pi
 	exp (Extend f) = Extend (exp.f)
 	exp (Yet c) = Yet (exp c)
 	log (Extend f) = Extend (log.f)
 	log (Yet c) = Yet (log c)
+	logBase x y = log y / log x
 	sin (Extend f) = Extend (sin.f)
 	sin (Yet c) = Yet (sin c)
 	cos (Extend f) = Extend (cos.f)
@@ -98,4 +106,40 @@ instance Floating Wu where
 	acosh (Yet c) = Yet (acosh c)
 	atanh (Extend f) = Extend (atanh.f)
 	atanh (Yet c) = Yet (atanh c)
+	(Extend f) ** (Extend g) = Extend (\x -> f x ** g x)
+	(Extend f) ** (Yet c) = Extend (\x -> f x ** c)
+	(Yet c) ** (Extend f) = Extend (\x -> f x ** c)
+	(Yet k) ** (Yet c) = Yet (k**c)
+
+
+{- 應用 -}
+
+
+
+{- 三論康托集 -}
+
+cantor1 = 2 ** c3
+cantor2 = m ** (log 3 / log 2) {- -}
+cantor3 = m * ((2/3) ** c3)   {-從[0,1)線段的點測度出發-}
+
+{-
+	cantor1 = 2 ** c3
+			= 2 ** (log 3 / log m)
+			= 3 ** (logBase 3 2) **logBase 3 m
+			= 3 ** logBase 3 m ** (logBase 3 2)
+			= m ** (logBase 3 2)
+			= m ** (log 3 / log 2)
+			= cantor2
+
+	cantor3 = m * ((2/3) ** c3)
+			= m	* 2**(log 3 / log m) / 3 ** (log 3 / log m)
+			= m	* 2**(log 3 / log m) / 3 ** (logBase 3 m)
+			= m * 2**(log 3 / log m) / m
+			= 2**(log 3 / log m)
+			= 2 ** c3
+			= cantor1
+
+	thus, cantor1 = cantor2 = cantor3
+
+-}
 
