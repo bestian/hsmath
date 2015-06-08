@@ -3,7 +3,7 @@
 
 
 
-solve1 :: String -> String
+solve1 :: String -> String 
 solve1 f = case a2 of
 		[] -> show $ (0 + read (tail b2) + read (tail c2)) / read tt 
 		_ -> show $ (0 + read (tail b2) - read (tail a2)) / read tt

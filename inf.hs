@@ -51,10 +51,10 @@ instance Show Wu where
 	show x = show (list x)
 
 instance Eq Wu where
-	(==) x y = list x == list y {- not strict  -}
+	(==) x y = list x == list y {- not strict  -} -- Fix me
 
 instance Ord Wu where
-	compare x y = compare (last $ long x) (last $ long y) {- not strict  -}
+	compare x y = compare (last $ long x) (last $ long y) {- not strict  -} -- Fix me
 
 negateWu :: Wu -> Wu
 negateWu (Extend f) = Extend (\x -> 0 - f x)
