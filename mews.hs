@@ -1,4 +1,5 @@
 import System.Random
+import Control.Monad (replicateM)
 
 
 rollDice :: IO Int
@@ -12,18 +13,15 @@ verbTs = ["嘲笑","幫助","打","踢","求助","尋找"]
 
 
 main :: IO ()
-main  =  do 
-		x <- rollDice
-		x2 <- rollDice
-		y <- rollDice
-		if (x == 0 || x == 1) then 			-- Fix me
-			appendFile "mews/output.txt" ("本月" ++ (nouns !! x) ++ "很好，每天都" ++ (verbIs !! y)++"\n\n")	
-			else
-			if ((x == 2 || x == 3) && (x2 /= x)) then
-				appendFile "mews/output.txt" ((nouns !! x) ++ "時常"++(verbTs !! y)++(nouns !! x2)++"\n\n")
-				else appendFile "mews/output.txt" ((nouns !! x) ++ "非常喜歡和"++(nouns !! x2) ++ "一起" ++ (verbIs !! y)++"\n\n")			
-		if (x > 0 || x2 /= 1) then -- Fix me
-			do main
-			else
-				print "done!"
-
+main  =  do
+		[x, x2, y] <- replicateM 3 rollDice
+		let msg = case x `mod` 3 of
+			0 -> act0
+			1 | x /= x2 -> act1
+			_ -> act2
+			where
+			act0 = "本月" ++ (nouns !! x) ++ "很好，每天都" ++ (verbIs !! y)++"\n\n"
+			act1 = (nouns !! x) ++ "時常"++(verbTs !! y)++(nouns !! x2)++"\n\n"
+			act2 = "非常喜歡和"++(nouns !! x2) ++ "一起" ++ (verbIs !! y)++"\n\n"
+		appendFile "mews/output.txt" msg
+		if x > 0 || x2 /= 1 then main else putStrLn "done!"
