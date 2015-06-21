@@ -8,11 +8,11 @@ a3 = Extend (\x -> 5)
 a4 = Extend (+1)
 m = Extend (10**)
 s = Extend (0.1**)
-c = Extend id
-c2 = log m / log 2    {- 以二為底，M的對數。也就是二進制時要表現出0~1所有數所需要的位數-}
-c3 = log m / log 3
-c4 = log m / log 4    {- 以四為底，M的對數。也就是四進制時要表現出0~1所有數所需要的位數，比二進制少一半-}
-c10 = log m / log 10
+c = Extend id = log m
+c2 = logBase 2 m =  {-  log m / log 2 = c / log 2  	note:以二為底，M的對數。也就是二進制時要表現出0~1所有數所需要的位數-}
+c3 = logBase 3 m = log m / log 3 = c / log 3
+c4 = logBase 4 m = {- log m / log 4    note: 以四為底，M的對數。也就是四進制時要表現出0~1所有數所需要的位數，比二進制少一半-}
+c10 = logBase 10 m = log m / log 10
 
 
 
